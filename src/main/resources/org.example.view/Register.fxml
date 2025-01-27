@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.albertoromeropino.viewController.Register">
+    <children>
+      <Button alignment="TOP_LEFT" mnemonicParsing="false" onAction="#goBack" text="Go Back">
+         <VBox.margin>
+            <Insets bottom="20.0" right="500.0" />
+         </VBox.margin>
+      </Button>
+        <TextField fx:id="nickName" alignment="CENTER" promptText="nombre">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </TextField>
+      <TextField fx:id="dni" alignment="CENTER" promptText="Email">
+         <font>
+            <Font size="18.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="40.0" />
+         </VBox.margin>
+      </TextField>
+        <PasswordField fx:id="password" alignment="CENTER" prefWidth="600.0" promptText="Password">
+            <opaqueInsets>
+                <Insets top="50.0" />
+            </opaqueInsets>
+            <VBox.margin>
+                <Insets top="40.0" />
+            </VBox.margin>
+            <font>
+                <Font size="18.0" />
+            </font>
+        </PasswordField>
+        <Button mnemonicParsing="false" onAction="#registerPerson" text="Register">
+            <VBox.margin>
+                <Insets top="50.0" />
+            </VBox.margin>
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Button>
+    </children>
+</VBox>

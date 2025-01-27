@@ -21,7 +21,7 @@ public class Connection {
     }
 
     public Session getSession() {
-        return sessionFactory.getCurrentSession();
+        return sessionFactory.openSession();
     }
 
     public static Connection getInstance() {

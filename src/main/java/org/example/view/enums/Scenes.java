@@ -1,8 +1,8 @@
 package org.example.view.enums;
 
 public enum Scenes {
-    LOGIN("view/Login.fxml"),
-    REGISTER("view/Register.fxml"),
+    LOGIN("viewController/Login.fxml"),
+    REGISTER("viewController/Register.fxml"),
 
     //Games
     MYGAME("viewController/MyGame.fxml"),

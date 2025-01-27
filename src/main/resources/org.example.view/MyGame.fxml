@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.albertoromeropino.viewController.GameController">
+   <children>
+      <Text cache="true" strokeType="OUTSIDE" strokeWidth="0.0" text="User games" textAlignment="CENTER">
+         <VBox.margin>
+            <Insets bottom="20.0" left="250.0" top="20.0" />
+         </VBox.margin></Text>
+      <TableView fx:id="tableView" prefHeight="274.0" prefWidth="594.0">
+         <columns>
+            <TableColumn fx:id="columnIdGame" onEditStart="#findArchievement" prefWidth="75.0" text="idGame" />
+            <TableColumn fx:id="columnName" prefWidth="75.0" text="Name" />
+            <TableColumn fx:id="columnCategory" prefWidth="75.0" text="Category" />
+            <TableColumn fx:id="columnCompany" editable="false" prefWidth="75.0" text="Company" />
+         </columns>
+      </TableView>
+   </children>
+</VBox>

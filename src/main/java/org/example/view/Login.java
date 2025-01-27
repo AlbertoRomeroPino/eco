@@ -2,17 +2,21 @@ package org.example.view;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import org.example.App;
+import org.example.model.entity.Usuario;
+import org.example.view.controllerView.Controller;
+import org.example.view.controllerView.View;
 import org.example.view.enums.Scenes;
 
-import javax.swing.text.View;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Login {
+public class Login extends Controller implements Initializable {
     @FXML
     private TextField user;
     @FXML
@@ -43,32 +47,41 @@ public class Login {
 
     @FXML
     public void enterApp(Event event) throws IOException {
-        Person person = new Person();
-        person.setNickName(user.getText());
-        person.setPassword(password.getText());
+        Usuario usuario = new Usuario();
+        usuario.setNombre(user.getText());
+        usuario.setContraseña(password.getText());
 
-        if (person.getNickName() != null || person.getNickName().equals("")) {
-            Person personDB = PersonDAO.build().findID(person.getNickName());
-            if (personDB != null) {
-                person.setPassword(Validations.encryptPassword(person.getPassword()));
-                if (person.getNickName().equals(personDB.getNickName()) &&
-                        person.getPassword().equals(personDB.getPassword())) {
-                    Sesion.getSesion().setPerson(personDB);
-                    System.out.println(person);
-                    changeScene(Scenes.MENUBAR, null);
-                }
-            } else {
-                Alert alerta = new Alert(Alert.AlertType.ERROR);
-                alerta.setTitle("Error");
-                alerta.setHeaderText("Error al insertar");
-                alerta.setContentText("Compruebe los datos");
-            }
 
-        }
+//        if (usuario.getNombre() != null || usuario.getNombre().equals("")) {
+//            Usuario usuarioDB = UsuarioService;
+//        }
+//        Person person = new Person();
+//        person.setNickName(user.getText());
+//        person.setPassword(password.getText());
+//
+//        if (person.getNickName() != null || person.getNickName().equals("")) {
+//            Person personDB = PersonDAO.build().findID(person.getNickName());
+//            if (personDB != null) {
+//                person.setPassword(Validations.encryptPassword(person.getPassword()));
+//                if (person.getNickName().equals(personDB.getNickName()) &&
+//                        person.getPassword().equals(personDB.getPassword())) {
+//                    Sesion.getSesion().setPerson(personDB);
+//                    System.out.println(person);
+//                    changeScene(Scenes.MENUBAR, null);
+//                }
+//            } else {
+//                Alert alerta = new Alert(Alert.AlertType.ERROR);
+//                alerta.setTitle("Error");
+//                alerta.setHeaderText("Error al insertar");
+//                alerta.setContentText("Compruebe los datos");
+//            }
+//
+//        }
     }
 
     @FXML
     public void registerInApp(Event event) throws IOException {
         changeScene(Scenes.REGISTER, null);
     }
+
 }
