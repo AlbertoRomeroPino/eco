@@ -5,8 +5,8 @@ import org.example.model.entity.Actividad;
 import org.example.model.entity.Habito;
 import org.example.model.entity.HabitoId;
 import org.example.model.entity.Sesion;
-import org.hibernate.Session;
 
+import java.time.Instant;
 import java.util.List;
 
 public class test2_habito {
@@ -16,7 +16,7 @@ public class test2_habito {
         Sesion.getSesion().setUsuario(UsuarioDao.BuscarNombreUsuario("test"));
         System.out.println(Sesion.getSesion().getUsuario());
 
-        Actividad actividad = ActividadDao.findById(idActividad);
+        Actividad actividad = ActividadDao.BuscarPorId(idActividad);
         System.out.println(actividad);
 
         Habito habito = new Habito();
@@ -27,9 +27,10 @@ public class test2_habito {
 
         habito.setId(id);
         habito.setIdUsuario(UsuarioDao.BuscarPorId(Sesion.getSesion().getUsuario().getId()));
-        habito.setIdActividad(ActividadDao.findById(idActividad));
+        habito.setIdActividad(ActividadDao.BuscarPorId(idActividad));
         habito.setTipo("Semanal");
         habito.setFrecuencia(5);
+        habito.setUltimaFecha(Instant.now());
 
         HabitoDao.InsertarHabito(habito);
 

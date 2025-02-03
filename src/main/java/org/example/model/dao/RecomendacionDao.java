@@ -2,11 +2,13 @@ package org.example.model.dao;
 
 import org.example.model.connection.Connection;
 import org.example.model.entity.Actividad;
+import org.example.model.entity.Recomendacion;
 import org.hibernate.Session;
 
-public class ActividadDao {
-    public static Actividad BuscarPorId(int id) {
+public class RecomendacionDao {
+    public static Recomendacion BuscarPorId(int id) {
         Session session = Connection.getInstance().getSession();
-        return (Actividad) session.get(Actividad.class, id);
+        return (Recomendacion) session.get(Recomendacion .class, id);
     }
+
 }
