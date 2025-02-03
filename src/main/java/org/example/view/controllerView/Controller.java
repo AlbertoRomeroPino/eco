@@ -1,7 +1,5 @@
 package org.example.view.controllerView;
 
-
-
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -11,7 +9,6 @@ import org.example.view.enums.Scenes;
 
 
 import java.io.IOException;
-
 
 public abstract class Controller {
     App app;

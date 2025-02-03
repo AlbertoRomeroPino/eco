@@ -7,10 +7,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.example.App;
+import org.example.model.dao.UsuarioDao;
+import org.example.model.entity.Sesion;
 import org.example.model.entity.Usuario;
+import org.example.utils.Validacion;
 import org.example.view.controllerView.Controller;
 import org.example.view.controllerView.View;
 import org.example.view.enums.Scenes;
+import org.hibernate.Session;
 
 import java.io.IOException;
 import java.net.URL;
@@ -50,34 +54,26 @@ public class Login extends Controller implements Initializable {
         Usuario usuario = new Usuario();
         usuario.setNombre(user.getText());
         usuario.setContraseña(password.getText());
-
-
-//        if (usuario.getNombre() != null || usuario.getNombre().equals("")) {
-//            Usuario usuarioDB = UsuarioService;
-//        }
-//        Person person = new Person();
-//        person.setNickName(user.getText());
-//        person.setPassword(password.getText());
-//
-//        if (person.getNickName() != null || person.getNickName().equals("")) {
-//            Person personDB = PersonDAO.build().findID(person.getNickName());
-//            if (personDB != null) {
-//                person.setPassword(Validations.encryptPassword(person.getPassword()));
-//                if (person.getNickName().equals(personDB.getNickName()) &&
-//                        person.getPassword().equals(personDB.getPassword())) {
-//                    Sesion.getSesion().setPerson(personDB);
-//                    System.out.println(person);
-//                    changeScene(Scenes.MENUBAR, null);
-//                }
-//            } else {
-//                Alert alerta = new Alert(Alert.AlertType.ERROR);
-//                alerta.setTitle("Error");
-//                alerta.setHeaderText("Error al insertar");
-//                alerta.setContentText("Compruebe los datos");
-//            }
-//
-//        }
+        if (usuario.getNombre() != null || usuario.getNombre().equals("")) {
+            Usuario usuarioDB = UsuarioDao.BuscarNombreUsuario(usuario.getNombre());
+            if (usuarioDB != null) {
+                usuario.setContraseña(Validacion.encryptPassword(password.getText()));
+                if (usuario.getNombre().equals(usuarioDB.getNombre()) &&
+                        usuario.getContraseña().equals(usuarioDB.getContraseña())) {
+                    Sesion.getSesion().setUsuario(usuario);
+                    //Comentario a posteriori borrar
+                    System.out.println(usuario.getNombre());
+                    changeScene(Scenes.MENUBAR, null);
+                } else {
+                    Alert alerta = new Alert(Alert.AlertType.ERROR);
+                    alerta.setTitle("Error");
+                    alerta.setHeaderText("Error al insertar");
+                    alerta.setContentText("Compruebe los datos");
+                }
+            }
+        }
     }
+
 
     @FXML
     public void registerInApp(Event event) throws IOException {

@@ -1,23 +1,9 @@
 package org.example.view.enums;
 
 public enum Scenes {
-    LOGIN("viewController/Login.fxml"),
-    REGISTER("viewController/Register.fxml"),
-
-    //Games
-    MYGAME("viewController/MyGame.fxml"),
-    ALLGAMES("viewController/AllGame.fxml"),
-    ADDGAME("viewController/AddGame.fxml"),
-
-    COMPANY("viewController/Company.fxml"),
-    ADDCOMPANY("viewController/AddCompany.fxml"),
-
-    ARCHIEVEMENT("viewController/Archievement.fxml"),
-    ADDARCHIEVEMENT("viewController/AddArchievement.fxml"),
-
-
-    MENUBAR("viewController/MenuBar.fxml");
-
+    LOGIN("/org/example/view/Login.fxml"),
+    REGISTER("/org/example/view/Register.fxml"),
+    MENUBAR("/org/example/view/MenuBar.fxml");
 
     private String url;
 

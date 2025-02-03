@@ -1,0 +1,94 @@
+-- Crear la base de datos
+CREATE DATABASE eco;
+USE eco;
+
+-- Crear la tabla Usuario
+CREATE TABLE Usuario (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    contraseña VARCHAR(255) NOT NULL,
+    fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Crear la tabla Categoría
+CREATE TABLE Categoria (
+    id_categoria INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    factor_emision DECIMAL(10, 4) NOT NULL,
+    unidad VARCHAR(50) NOT NULL
+);
+
+-- Crear la tabla Actividad
+CREATE TABLE Actividad (
+    id_actividad INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    id_categoria INT,
+    FOREIGN KEY (id_categoria) REFERENCES Categoria(id_categoria)
+);
+
+-- Crear la tabla Huella
+CREATE TABLE Huella (
+    id_registro INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT,
+    id_actividad INT,
+    valor DECIMAL(10, 2) NOT NULL,
+    unidad VARCHAR(50) NOT NULL,
+    fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario) ON DELETE CASCADE,
+    FOREIGN KEY (id_actividad) REFERENCES Actividad(id_actividad)
+);
+
+-- Crear la tabla Habito (tabla intermedia)
+CREATE TABLE Habito (
+    id_usuario INT,
+    id_actividad INT,
+    frecuencia INT NOT NULL,
+    tipo ENUM('diaria', 'semanal', 'mensual', 'anual') NOT NULL,
+    ultima_fecha DATETIME,
+    PRIMARY KEY (id_usuario, id_actividad),
+    FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario) ON DELETE CASCADE,
+    FOREIGN KEY (id_actividad) REFERENCES Actividad(id_actividad)
+);
+
+-- Crear la tabla Recomendacion
+CREATE TABLE Recomendacion (
+    id_recomendacion INT AUTO_INCREMENT PRIMARY KEY,
+    id_categoria INT,
+    descripcion TEXT NOT NULL,
+    impacto_estimado DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (id_categoria) REFERENCES Categoria(id_categoria)
+);
+
+-- Insertar datos en la tabla Categoría
+INSERT INTO Categoria (id_categoria, nombre, factor_emision, unidad) VALUES
+(1, 'Transporte', 0.21, 'Km'),
+(2, 'Energía', 0.233, 'KWh'),
+(3, 'Alimentación', 2.5, 'Kg'),
+(4, 'Residuos', 0.41, 'Kg'),
+(5, 'Agua', 0.35, 'm³');
+
+-- Insertar datos en la tabla Actividad
+INSERT INTO Actividad (id_actividad, nombre, id_categoria) VALUES
+(1, 'Conducir coche', 1),
+(2, 'Usar transporte público', 1),
+(3, 'Viajar en avión', 1),
+(4, 'Consumo eléctrico', 2),
+(5, 'Consumo de gas', 2),
+(6, 'Comer carne de res', 3),
+(7, 'Comer alimentos vegetarianos', 3),
+(8, 'Generar residuos domésticos', 4),
+(9, 'Consumo de agua potable', 5);
+
+-- Insertar datos en la tabla Recomendación
+INSERT INTO Recomendacion (id_recomendacion, id_categoria, descripcion, impacto_estimado) VALUES
+(1, 1, 'Usa bicicleta o camina en distancias cortas', 30),
+(2, 1, 'Opta por el transporte público en vez del coche', 45),
+(3, 1, 'Compartir coche con compañeros reduce emisiones', 20),
+(4, 2, 'Apaga dispositivos eléctricos cuando no los uses', 10),
+(5, 2, 'Usa bombillas LED en lugar de incandescentes', 15),
+(6, 3, 'Reduce el consumo de carne de res y opta por vegetales', 5),
+(7, 3, 'Compra productos locales y de temporada', 10),
+(8, 4, 'Recicla residuos para disminuir emisiones', 5),
+(9, 4, 'Reduce el uso de plásticos desechables', 10),
+(10, 5, 'Reduce el tiempo de ducha y ahorra agua', 15);

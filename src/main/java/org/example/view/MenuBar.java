@@ -23,7 +23,7 @@ public class MenuBar extends Controller implements Initializable {
 
     @Override
     public void onOpen(Object input, Object data) throws IOException {
-        changeScene(Scenes.MYGAME, null);
+        //changeScene(Scenes.MYGAME, null);
     }
 
     public void changeScene(Scenes scenes, Object data) throws IOException {
@@ -51,14 +51,7 @@ public class MenuBar extends Controller implements Initializable {
 
 
 
-        /*String url = scenes.getURL();
-        FXMLLoader loader = new FXMLLoader(App.class.getResource(url));
-        Parent parent = loader.load();
-        Controller controller = loader.getController();
-        View view = new View();
-        view.scene = parent;
-        view.controller = controller;
-        return view;*/
+
     }
 
 
@@ -91,15 +84,15 @@ public class MenuBar extends Controller implements Initializable {
 
     @FXML
     private void goToGame() throws IOException {
-        changeScene(Scenes.MYGAME, null);
+       // changeScene(Scenes.MYGAME, null);
     }
 
     @FXML
     private void goToCompany() throws IOException {
-        changeScene(Scenes.COMPANY, null);
+       // changeScene(Scenes.COMPANY, null);
     }
     @FXML
     private void goToAllGames() throws IOException{
-        changeScene(Scenes.ALLGAMES, null);
+        //changeScene(Scenes.ALLGAMES, null);
     }
 }

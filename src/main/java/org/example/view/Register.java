@@ -58,7 +58,7 @@ public class Register extends Controller implements Initializable {
             if (!usuario.getNombre().equals("") && !usuario.getEmail().equals("")) {
                 Usuario usuarioDB = UsuarioDao.BuscarNombreUsuario(usuario.getNombre());
                 if (usuarioDB == null ) {
-                    UsuarioDao.insertUsuario(usuario);
+                    UsuarioDao.InsertarUsuario(usuario);
                     goBack();
                 }
                 else {

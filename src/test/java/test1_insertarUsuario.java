@@ -15,6 +15,6 @@ public class test1_insertarUsuario {
         usuario.setNombre("Usuario 1");
         usuario.setContraseña(Validacion.encryptPassword("123456"));
         usuario.setEmail("usuario1@gmail.com");
-        UsuarioDao.insertUsuario(usuario);
+        UsuarioDao.InsertarUsuario(usuario);
     }
 }

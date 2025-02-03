@@ -39,7 +39,6 @@ public class App extends Application {
         currentController = (Controller) view.controller;
         currentController.onOpen(data,null);
         stage.setScene(scene);
-        //stage_.show();
     }
 
     public static void main(String[] args) {
