@@ -5,18 +5,16 @@ import org.example.model.entity.Sesion;
 import org.example.model.entity.Usuario;
 import org.example.utils.Utils;
 import org.example.utils.Validacion;
-import org.example.viewTerminal.View;
+import org.example.viewTerminal.ViewControlador;
 
 import java.time.Instant;
 
 public class Controlador {
     public static void Iniciar() {
-
-
         int result;
 
         do {
-            result = View.SeleccionInicial();
+            result = ViewControlador.SeleccionInicial();
 
             switch (result) {
                 case 1:
@@ -26,11 +24,11 @@ public class Controlador {
                     RegistrarUsuario();
                     break;
                 case 3:
-                    View.Despedida();
+                    ViewControlador.Despedida();
                     break;
             }
 
-        } while (result != 3) ;
+        } while (result != 3);
     }
 
     public static void ComprobarLogin() {
@@ -42,7 +40,7 @@ public class Controlador {
         Usuario usuarioDB = UsuarioDao.BuscarNombreUsuario(nombre);
 
         if (usuarioDB == null) {
-            View.OpcionNoAdecuada("Usuario no encontrado");
+            ViewControlador.OpcionNoAdecuada("Usuario no encontrado");
         } else {
             if (usuarioDB.getContraseña().equals(contraseñaEncriptada)) {
                 Sesion.getSesion().setUsuario(usuarioDB);
@@ -76,7 +74,7 @@ public class Controlador {
         int result;
         boolean usuarioBorrado = false;
         do {
-            result = View.SesionIniciada();
+            result = ViewControlador.SesionIniciada();
 
             switch (result) {
                 case 1:

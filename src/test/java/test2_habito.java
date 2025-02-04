@@ -19,6 +19,7 @@ public class test2_habito {
         Actividad actividad = ActividadDao.BuscarPorId(idActividad);
         System.out.println(actividad);
 
+
         Habito habito = new Habito();
 
         HabitoId id = new HabitoId();

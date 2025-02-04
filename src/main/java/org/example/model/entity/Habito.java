@@ -83,7 +83,7 @@ public class Habito {
     public String toString() {
         return "Habito{" +
                 " idUsuario=" + idUsuario.getNombre() +
-                ", idActividad=" + idActividad.getNombre() +
+                ", idActividad=" + idActividad.getId() + "-" +  idActividad.getNombre() +
                 ", frecuencia=" + frecuencia +
                 ", tipo='" + tipo + '\'' +
                 ", ultimaFecha=" + ultimaFecha +

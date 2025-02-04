@@ -2,7 +2,7 @@ package org.example.viewTerminal;
 
 import java.util.Scanner;
 
-public class View {
+public class ViewControlador {
     /**
      * 1 Ingresar Usuario | 2 Registrarse | 3 Salir
      *
@@ -31,34 +31,6 @@ public class View {
             System.out.println("4. Salir");
             arg = sc.nextInt();
         } while (arg < 1 || arg > 4);
-        return arg;
-    }
-
-    public static int ModificarUsuario() {
-        Scanner sc = new Scanner(System.in);
-        int arg;
-        do {
-            System.out.println("1. Modificar nombre ");
-            System.out.println("2. Modificar contraseña ");
-            System.out.println("3. Modificar email ");
-            System.out.println("4. Eliminar Usuario");
-            System.out.println("5. Salir ");
-            arg = sc.nextInt();
-        } while (arg < 1 || arg > 5);
-        return arg;
-    }
-
-    public static int VistaHabito(){
-        Scanner sc = new Scanner(System.in);
-        int arg;
-        do {
-            System.out.println("1. Crear nuevo habito");
-            System.out.println("2. Modificar habito");
-            System.out.println("3. Eliminar habito");
-            System.out.println("4. Buscar habito");
-            System.out.println("5. Salir ");
-            arg = sc.nextInt();
-        }while (arg < 1 || arg > 5);
         return arg;
     }
 

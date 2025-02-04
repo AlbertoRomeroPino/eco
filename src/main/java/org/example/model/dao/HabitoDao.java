@@ -1,10 +1,8 @@
 package org.example.model.dao;
 
 import org.example.model.connection.Connection;
-import org.example.model.entity.Actividad;
-import org.example.model.entity.Habito;
-import org.example.model.entity.Sesion;
-import org.example.model.entity.Usuario;
+import org.example.model.entity.*;
+import org.example.utils.Utils;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -36,18 +34,36 @@ public class HabitoDao {
         }
     }
 
+    public static Habito BuscarHabitoId(int idActividad) {
+        Session session = Connection.getInstance().getSession();
+
+        // Obtener el id del usuario en sesión
+        int idUsuario = Sesion.getSesion().getUsuario().getId();
+
+        // Crear el ID compuesto
+        HabitoId habitoId = new HabitoId();
+        habitoId.setIdUsuario(idUsuario);
+        habitoId.setIdActividad(idActividad);
+
+        // Buscar el hábito con la clave compuesta
+        return session.get(Habito.class, habitoId);
+    }
+
+
     public static List<Habito> BuscarHabito() {
         Session session = Connection.getInstance().getSession();
 
         Query<Habito> query = session.createQuery(
                 "SELECT h FROM Habito h " +
                         "JOIN FETCH h.idUsuario " +
-                        "JOIN FETCH h.idActividad",
+                        "JOIN FETCH h.idActividad " +
+                        "WHERE h.idUsuario.id = :idUsuario",  // Filtrar por el usuario logueado
                 Habito.class
-        );
+        ).setParameter("idUsuario", Sesion.getSesion().getUsuario().getId());
 
         List<Habito> habitos = query.list();
         return habitos;
+
     }
 
     public static void ActualizarHabito(Habito habito) {
@@ -72,8 +88,26 @@ public class HabitoDao {
     public static void EliminarHabito(Habito habito) {
         Session session = Connection.getInstance().getSession();
         session.beginTransaction();
-        session.delete(habito);
-        session.getTransaction().commit();
-        System.out.println("Se ha eliminado el habito.");
+
+        try {
+            // Buscar el hábito dentro de la misma sesión
+            HabitoId id = new HabitoId();
+            id.setIdUsuario(Sesion.getSesion().getUsuario().getId());
+            id.setIdActividad(habito.getId().getIdActividad());
+
+            Habito habitoTMP = session.get(Habito.class, id);
+
+            if (habitoTMP != null) {
+                session.remove(habitoTMP); // Hibernate 6
+                session.getTransaction().commit();
+                System.out.println("Se ha eliminado el hábito correctamente.");
+            } else {
+                System.out.println("No se encontró el hábito con los IDs proporcionados.");
+                session.getTransaction().rollback();
+            }
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+        }
     }
 }

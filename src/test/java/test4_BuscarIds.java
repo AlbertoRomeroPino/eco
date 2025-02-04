@@ -5,6 +5,8 @@ import org.example.model.entity.Actividad;
 import org.example.model.entity.Categoria;
 import org.example.model.entity.Recomendacion;
 
+import java.util.List;
+
 public class test4_BuscarIds {
     public static void main(String[] args) {
         int id = 1;
@@ -14,5 +16,13 @@ public class test4_BuscarIds {
         System.out.println(actividad);
         Recomendacion recomendacion = RecomendacionDao.BuscarPorId(id);
         System.out.println(recomendacion);
+
+        System.out.println();
+        System.out.println();
+
+        List<Actividad> actividadList = ActividadDao.BuscarTodasActividades();
+        for (Actividad actividad1 : actividadList) {
+            System.out.println(actividad1);
+        }
     }
 }

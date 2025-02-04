@@ -4,14 +4,15 @@ import org.example.model.dao.UsuarioDao;
 import org.example.model.entity.Sesion;
 import org.example.utils.Utils;
 import org.example.utils.Validacion;
-import org.example.viewTerminal.View;
+import org.example.viewTerminal.ViewControlador;
+import org.example.viewTerminal.ViewUsuario;
 
 public class ControladorUsuario {
     public static boolean EditarUsuario() {
         int arg;
         boolean usuarioBorrado = false;
         do {
-            arg = View.ModificarUsuario();
+            arg = ViewUsuario.ModificarUsuario();
             switch (arg) {
                 case 1:
                     String nombre = Utils.leeString("Nuevo nombre: ");
