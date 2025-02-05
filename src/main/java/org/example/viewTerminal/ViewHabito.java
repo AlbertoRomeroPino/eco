@@ -1,12 +1,13 @@
 package org.example.viewTerminal;
 
 import org.example.model.entity.Actividad;
+import org.example.utils.Utils;
 
 import java.util.Scanner;
 
 public class ViewHabito {
     public static int VistaHabito() {
-        Scanner sc = new Scanner(System.in);
+
         int arg;
         do {
             System.out.println("1. Crear nuevo habito");
@@ -14,7 +15,7 @@ public class ViewHabito {
             System.out.println("3. Mostrar habitos");
             System.out.println("4. Eliminar habito");
             System.out.println("5. Salir ");
-            arg = sc.nextInt();
+            arg = Utils.leeNumero("Ingresa un numero");
         } while (arg < 1 || arg > 5);
         return arg;
     }

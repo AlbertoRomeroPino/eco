@@ -62,6 +62,6 @@ public class Recomendacion {
                 "id=" + id +
                 ", descripcion='" + descripcion + '\'' +
                 ", impactoEstimado=" + impactoEstimado +
-                '}';
+                "} \n";
     }
 }

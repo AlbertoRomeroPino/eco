@@ -1,10 +1,7 @@
 package org.example.model.dao;
 
 import org.example.model.connection.Connection;
-import org.example.model.entity.Actividad;
-import org.example.model.entity.Habito;
-import org.example.model.entity.Huella;
-import org.example.model.entity.Usuario;
+import org.example.model.entity.*;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -40,11 +37,21 @@ public class HuellaDao {
         }
     }
 
+    public static Huella BuscarHuellaId(int idHuella) {
+        Session session = Connection.getInstance().getSession();
+
+        return session.get(Huella.class, idHuella);
+    }
 
     public static List<Huella> BuscarHuella() {
         Session session = Connection.getInstance().getSession();
 
-        Query<Huella> query = session.createQuery("SELECT h FROM Huella h " + "JOIN FETCH h.idUsuario " + "JOIN FETCH h.idActividad", Huella.class);
+        Query<Huella> query = session.createQuery("SELECT h FROM Huella h " +
+                                "JOIN FETCH h.idUsuario " +
+                                "JOIN FETCH h.idActividad " +
+                                "where h.idUsuario.id = :usuario",
+                        Huella.class)
+                .setParameter("usuario", Sesion.getSesion().getUsuario().getId());
         List<Huella> huellas = query.list();
         return huellas;
     }

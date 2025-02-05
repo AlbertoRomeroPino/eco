@@ -1,5 +1,7 @@
 package org.example.viewTerminal;
 
+import org.example.utils.Utils;
+
 import java.util.Scanner;
 
 public class ViewControlador {
@@ -9,28 +11,27 @@ public class ViewControlador {
      * @return el numero seleccionado
      */
     public static int SeleccionInicial() {
-        Scanner sc = new Scanner(System.in);
         int arg;
         do {
             System.out.println("Que desea hacer:");
             System.out.println("1. Ingresar usuario");
             System.out.println("2. Registrarse en la aplicacion");
             System.out.println("3. Salir");
-            arg = sc.nextInt();
+            arg = Utils.leeNumero("Ingrese un numero");
         } while (arg < 1 || arg > 3);
         return arg;
     }
 
     public static int SesionIniciada() {
-        Scanner sc = new Scanner(System.in);
         int arg;
         do {
             System.out.println("1. Modificar usuario");
             System.out.println("2. Mis habitos");
             System.out.println("3. Mi huella");
-            System.out.println("4. Salir");
-            arg = sc.nextInt();
-        } while (arg < 1 || arg > 4);
+            System.out.println("4. Recomendaciones para ti");
+            System.out.println("5. Salir");
+            arg = Utils.leeNumero("Ingrese un numero");
+        } while (arg < 1 || arg > 5);
         return arg;
     }
 

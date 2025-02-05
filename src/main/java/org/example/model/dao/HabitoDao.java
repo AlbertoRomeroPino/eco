@@ -26,7 +26,7 @@ public class HabitoDao {
         // Verificar si ya existe el hábito
         Habito habitoExistente = session.get(Habito.class, habito.getId());
         if (habitoExistente != null) {
-            System.out.println("El hábito ya existe.");
+            System.err.println("El hábito ya existe.");
         } else {
             session.persist(habito);
             session.getTransaction().commit();

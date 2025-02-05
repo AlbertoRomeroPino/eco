@@ -1,13 +1,11 @@
 package org.example.controller;
 
-import org.example.model.dao.UsuarioDao;
-import org.example.model.entity.Sesion;
-import org.example.model.entity.Usuario;
-import org.example.utils.Utils;
-import org.example.utils.Validacion;
+import org.example.model.dao.HabitoDao;
+import org.example.model.entity.Habito;
+import org.example.services.UsuarioService;
 import org.example.viewTerminal.ViewControlador;
 
-import java.time.Instant;
+import java.util.List;
 
 public class Controlador {
     public static void Iniciar() {
@@ -18,10 +16,10 @@ public class Controlador {
 
             switch (result) {
                 case 1:
-                    ComprobarLogin();
+                    UsuarioService.ComprobarLogin();
                     break;
                 case 2:
-                    RegistrarUsuario();
+                    UsuarioService.RegistrarUsuario();
                     break;
                 case 3:
                     ViewControlador.Despedida();
@@ -29,45 +27,6 @@ public class Controlador {
             }
 
         } while (result != 3);
-    }
-
-    public static void ComprobarLogin() {
-        String nombre = Utils.leeString("Inserte el nombre de usuario");
-        String contraseña = Utils.leeString("Inserte tu contraseña");
-
-        String contraseñaEncriptada = Validacion.encryptPassword(contraseña);
-
-        Usuario usuarioDB = UsuarioDao.BuscarNombreUsuario(nombre);
-
-        if (usuarioDB == null) {
-            ViewControlador.OpcionNoAdecuada("Usuario no encontrado");
-        } else {
-            if (usuarioDB.getContraseña().equals(contraseñaEncriptada)) {
-                Sesion.getSesion().setUsuario(usuarioDB);
-                System.out.println("Bienvenido, " + usuarioDB.getNombre());
-
-                if (!Sesion.getSesion().getUsuario().getNombre().isEmpty() &&
-                        !Sesion.getSesion().getUsuario().getContraseña().isEmpty()) {
-                    SesionIniciada();
-                }
-            } else {
-                // Si la contraseña es incorrecta
-                System.out.println("Contraseña incorrecta");
-            }
-        }
-    }
-
-    public static void RegistrarUsuario() {
-        Usuario usuario = new Usuario();
-        String nombreRegistrar = Utils.leeString("Inserte el nombre de usuario");
-        String contraseñaRegistrar = Utils.leeString("Inserte la contraseña");
-        String emailRegistrar = Utils.leeString("Inserte el email de usuario");
-
-        usuario.setNombre(nombreRegistrar);
-        usuario.setContraseña(Validacion.encryptPassword(contraseñaRegistrar));
-        usuario.setEmail(emailRegistrar);
-        usuario.setFechaRegistro(Instant.now());
-        UsuarioDao.InsertarUsuario(usuario);
     }
 
     public static void SesionIniciada() {
@@ -84,11 +43,23 @@ public class Controlador {
                     ControladorHabito.ControlHabito();
                     break;
                 case 3:
+                    ControladorHuella.ControladorHuella();
                     break;
                 case 4:
+                    RecomendacionHabito();
                     break;
-            }
-        } while (result != 4 && !usuarioBorrado);
+                case 5:
 
+            }
+        } while (result != 5 && !usuarioBorrado);
+
+    }
+
+    public static void RecomendacionHabito() {
+        List<Habito> habito = HabitoDao.BuscarHabito();
+        for (Habito habitoDB : habito) {
+            System.out.println(habitoDB.getIdActividad().getNombre() + ":");
+            System.out.println(habitoDB.getIdActividad().getIdCategoria().getRecomendacions());
+        }
     }
 }
