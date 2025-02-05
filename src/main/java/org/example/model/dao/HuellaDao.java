@@ -88,4 +88,17 @@ public class HuellaDao {
             System.out.println("La huella no existe, no se puede eliminar.");
         }
     }
+
+    public static List<Huella> BuscarPorActividad(Actividad actividad) {
+        Session session = Connection.getInstance().getSession();
+
+        Query<Huella> query = session.createQuery("SELECT h FROM Huella h " +
+                                "JOIN FETCH h.idUsuario " +
+                                "JOIN FETCH h.idActividad " +
+                                "where h.idActividad.id = :idActividad",
+                        Huella.class)
+                .setParameter("idActividad", actividad.getId());
+        List<Huella> huellas = query.list();
+        return huellas;
+    }
 }

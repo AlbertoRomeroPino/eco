@@ -56,4 +56,18 @@ public class HuellaService {
         HuellaDao.EliminarHuella(huella);
     }
 
+    public static void CompararHuella() {
+        int idHuella = Utils.leeNumero("Inserte el id de la huella");
+
+        Huella huellaAComparar = HuellaDao.BuscarHuellaId(idHuella);
+        List<Huella> huellas = HuellaDao.BuscarPorActividad(huellaAComparar.getIdActividad());
+        for (Huella huella : huellas) {
+            if (huella.getIdUsuario() == huellaAComparar.getIdUsuario()) {
+                System.out.println("tu -->" + huellaAComparar);
+            } else {
+                System.out.println(huella);
+            }
+        }
+
+    }
 }

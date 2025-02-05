@@ -14,8 +14,9 @@ public class ViewHuella {
             System.out.println("3. Mostrar huella");
             System.out.println("4. Eliminar huella");
             System.out.println("5. Huella de carbono de la huella");
-            System.out.println("6. Generar PDF");
-            System.out.println("7. Salir ");
+            System.out.println("8. Comparar huella con otros usuarios");
+            System.out.println("7. Generar PDF");
+            System.out.println("8. Salir ");
             arg = Utils.leeNumero("Ingresa un numero");
         } while (arg < 1 || arg > 7);
         return arg;

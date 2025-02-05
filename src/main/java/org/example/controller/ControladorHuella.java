@@ -50,11 +50,16 @@ public class ControladorHuella {
 
                     break;
                 case 6:
-                    generarPDF();
+                    // Comparar
+                    HuellaService.CompararHuella();
+                    break;
                 case 7:
+                    generarPDF();
+                    break;
+                case 8:
                     // Salir
             }
-        } while (arg != 7);
+        } while (arg != 8);
     }
 
     public static void generarPDF() {
