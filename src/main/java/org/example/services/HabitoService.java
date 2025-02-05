@@ -32,8 +32,18 @@ public class HabitoService {
         habitoCrear.setId(id);
         habitoCrear.setIdUsuario(UsuarioDao.BuscarPorId(Sesion.getSesion().getUsuario().getId()));
         habitoCrear.setIdActividad(ActividadDao.BuscarPorId(idActividad));
-        habitoCrear.setTipo(Utils.leeString("Ingrese el tipo de habito:\n" +
-                "diario, semanal, mensual o anual"));
+
+        HabitoTipo tipoHabito = null;
+        while (tipoHabito == null) {
+            String tipoIngresado = Utils.leeString("Ingrese el tipo de hábito (diario, semanal, mensual o anual)").toLowerCase();
+            try {
+                tipoHabito = HabitoTipo.valueOf(tipoIngresado);
+            } catch (IllegalArgumentException e) {
+                System.out.println("⚠️ Tipo inválido. Por favor, ingrese una opción válida: diario, semanal, mensual o anual.");
+            }
+        }
+        habitoCrear.setTipo(tipoHabito.name());
+
         habitoCrear.setFrecuencia(Utils.leeNumero("Cuantas veces haces esta accion "));
         habitoCrear.setUltimaFecha(Utils.leeFecha());
 

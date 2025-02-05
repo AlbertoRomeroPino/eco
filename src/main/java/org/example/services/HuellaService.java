@@ -8,6 +8,7 @@ import org.example.model.entity.Sesion;
 import org.example.utils.Utils;
 import org.example.viewTerminal.ViewHabito;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class HuellaService {
@@ -57,17 +58,59 @@ public class HuellaService {
     }
 
     public static void CompararHuella() {
-        int idHuella = Utils.leeNumero("Inserte el id de la huella");
+        // Pedir al usuario que ingrese el ID de la huella
+        int idHuella = Utils.leeNumero("Inserte el ID de la huella");
 
+        // Buscar la huella seleccionada por el usuario
         Huella huellaAComparar = HuellaDao.BuscarHuellaId(idHuella);
+
+        if (huellaAComparar == null) {
+            System.out.println("No se encontró la huella con ese ID.");
+            return;
+        }
+
+        // Obtener el factor de emisión de la categoría
+        BigDecimal factorEmision = huellaAComparar.getIdActividad().getIdCategoria().getFactorEmision();
+        BigDecimal valorHuella = huellaAComparar.getValor();
+        BigDecimal carbonoUsuario = factorEmision.multiply(valorHuella);
+
+        // Obtener todas las huellas de la misma categoría
         List<Huella> huellas = HuellaDao.BuscarPorActividad(huellaAComparar.getIdActividad());
+
+        // Variables para calcular la media de otros usuarios
+        BigDecimal sumaCarbono = BigDecimal.ZERO;
+        int contador = 0;
+
         for (Huella huella : huellas) {
-            if (huella.getIdUsuario() == huellaAComparar.getIdUsuario()) {
-                System.out.println("tu -->" + huellaAComparar);
-            } else {
-                System.out.println(huella);
+            if (!huella.getIdUsuario().equals(huellaAComparar.getIdUsuario())) {
+                BigDecimal carbonoOtroUsuario = huella.getValor().multiply(huella.getIdActividad().getIdCategoria().getFactorEmision());
+                sumaCarbono = sumaCarbono.add(carbonoOtroUsuario);
+                contador++;
             }
         }
 
+        // Calcular la media de huella de carbono de otros usuarios
+        BigDecimal mediaCarbono = (contador > 0) ? sumaCarbono.divide(BigDecimal.valueOf(contador), 2, BigDecimal.ROUND_HALF_UP) : BigDecimal.ZERO;
+
+        // Mostrar resultados
+        System.out.println("\nComparación de huella de carbono");
+        System.out.println("--------------------------------");
+        System.out.println("Categoría: " + huellaAComparar.getIdActividad().getIdCategoria().getNombre());
+        System.out.println("Tu huella de carbono: " + carbonoUsuario + " " + huellaAComparar.getIdActividad().getIdCategoria().getUnidad());
+
+        if (contador > 0) {
+            System.out.println("Media de otros usuarios: " + mediaCarbono + " " + huellaAComparar.getIdActividad().getIdCategoria().getUnidad());
+
+            if (carbonoUsuario.compareTo(mediaCarbono) > 0) {
+                System.out.println("⚠️ Tu huella de carbono está por ENCIMA de la media.");
+            } else if (carbonoUsuario.compareTo(mediaCarbono) < 0) {
+                System.out.println("✅ Tu huella de carbono está por DEBAJO de la media.");
+            } else {
+                System.out.println("🔵 Tu huella de carbono es IGUAL a la media.");
+            }
+        } else {
+            System.out.println("No hay datos suficientes para calcular la media.");
+        }
     }
+
 }
