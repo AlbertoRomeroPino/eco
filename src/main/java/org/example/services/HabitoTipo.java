@@ -1,7 +1,7 @@
 package org.example.services;
 
 public enum HabitoTipo {
-    diaria,
+    diario,
     semanal,
     mensual,
     anual

@@ -31,23 +31,28 @@ public class HabitoService {
         // Rellenamos el habito
         habitoCrear.setId(id);
         habitoCrear.setIdUsuario(UsuarioDao.BuscarPorId(Sesion.getSesion().getUsuario().getId()));
-        habitoCrear.setIdActividad(ActividadDao.BuscarPorId(idActividad));
+        if (ActividadDao.BuscarPorId(idActividad) != null) {
+            habitoCrear.setIdActividad(ActividadDao.BuscarPorId(idActividad));
 
-        HabitoTipo tipoHabito = null;
-        while (tipoHabito == null) {
-            String tipoIngresado = Utils.leeString("Ingrese el tipo de hábito (diario, semanal, mensual o anual)").toLowerCase();
-            try {
-                tipoHabito = HabitoTipo.valueOf(tipoIngresado);
-            } catch (IllegalArgumentException e) {
-                System.out.println("⚠️ Tipo inválido. Por favor, ingrese una opción válida: diario, semanal, mensual o anual.");
+            HabitoTipo tipoHabito = null;
+            while (tipoHabito == null) {
+                String tipoIngresado = Utils.leeString("Ingrese el tipo de hábito (diario, semanal, mensual o anual)").toLowerCase();
+                try {
+                    tipoHabito = HabitoTipo.valueOf(tipoIngresado);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("⚠️ Tipo inválido. Por favor, ingrese una opción válida: diario, semanal, mensual o anual.");
+                }
             }
+            habitoCrear.setTipo(tipoHabito.name());
+
+            habitoCrear.setFrecuencia(Utils.leeNumero("Cuantas veces haces esta accion "));
+            habitoCrear.setUltimaFecha(Utils.leeFecha());
+
+            HabitoDao.InsertarHabito(habitoCrear);
+        }else {
+            System.err.println("La actividad no existe.");
         }
-        habitoCrear.setTipo(tipoHabito.name());
 
-        habitoCrear.setFrecuencia(Utils.leeNumero("Cuantas veces haces esta accion "));
-        habitoCrear.setUltimaFecha(Utils.leeFecha());
-
-        HabitoDao.InsertarHabito(habitoCrear);
     }
 
     public static void ActualizarHabito() {

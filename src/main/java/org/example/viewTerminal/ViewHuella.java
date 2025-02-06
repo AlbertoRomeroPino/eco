@@ -18,7 +18,7 @@ public class ViewHuella {
             System.out.println("7. Generar PDF");
             System.out.println("8. Salir ");
             arg = Utils.leeNumero("Ingresa un numero");
-        } while (arg < 1 || arg > 7);
+        } while (arg < 1 || arg > 8);
         return arg;
     }
 }

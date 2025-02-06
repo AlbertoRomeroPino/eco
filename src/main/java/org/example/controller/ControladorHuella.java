@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import org.example.model.dao.HuellaDao;
+import org.example.model.dao.RecomendacionDao;
 import org.example.model.entity.*;
 import org.example.services.HuellaService;
 import org.example.utils.Utils;
@@ -46,7 +47,7 @@ public class ControladorHuella {
                     BigDecimal factorEmision = huellaCarbono.getIdActividad().getIdCategoria().getFactorEmision();
                     BigDecimal valorHuella = huellaCarbono.getValor();
                     BigDecimal Carbono = factorEmision.multiply(valorHuella);
-                    System.out.println(Carbono + " " + huellaCarbono.getIdActividad().getIdCategoria().getUnidad());
+                    System.out.println("Cada vez que realizas esta accion probocas: " + Carbono + " " + huellaCarbono.getIdActividad().getIdCategoria().getUnidad());
 
                     break;
                 case 6:
@@ -58,59 +59,74 @@ public class ControladorHuella {
                     break;
                 case 8:
                     // Salir
+                    break;
+                default:
+                    System.out.println("Opcion no valida");
             }
         } while (arg != 8);
     }
 
     public static void generarPDF() {
+        // Obtener usuario y fecha actual con hora y minutos
+        String nombreUsuario = Sesion.getSesion().getUsuario().getNombre();
+        String fechaActual = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm"));
+
+        // Definir el destino del archivo con el nombre del usuario y la fecha
+        String destino = "./PDF/Reporte_" + nombreUsuario + "_" + fechaActual + ".pdf";
+
         try {
-            // Obtener nombre del usuario
-            String nombreUsuario = Sesion.getSesion().getUsuario().getNombre();
-
-            // Obtener la fecha y hora actual en formato "dd-MM-yyyy_HH-mm"
-            String fechaActual = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm"));
-
-            // Construir el nombre del archivo con usuario y fecha
-            String destino = "./PDF/" + nombreUsuario + "_" + fechaActual + ".pdf";
-
             // Crear el documento PDF
             PdfWriter writer = new PdfWriter(destino);
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf);
 
-            // Obtener datos de huella
+            // Obtener la lista de huellas del usuario
             List<Huella> huellas = HuellaDao.BuscarHuella();
 
-            // Agregar título
-            document.add(new Paragraph("Reporte de Huella de Carbono").setBold().setFontSize(18));
-            document.add(new Paragraph("Usuario: " + nombreUsuario).setFontSize(14));
-            document.add(new Paragraph("Fecha de generación: " + fechaActual).setFontSize(12));
+            // Agregar título y usuario
+            document.add(new Paragraph("📄 Reporte de Huella de Carbono").setBold().setFontSize(18));
+            document.add(new Paragraph("👤 Usuario: " + nombreUsuario).setFontSize(14));
+            document.add(new Paragraph("📅 Generado el: " + fechaActual.replace("_", " a las ")).setFontSize(12));
+            document.add(new Paragraph("\n"));
 
-            // Crear la tabla
-            float[] columnWidths = {3, 3, 3}; // Columnas para Fecha, Valor, Actividad
+            // Crear tabla con columnas para Fecha, Valor, Actividad y Recomendaciones
+            float[] columnWidths = {3, 3, 3, 4};
             Table table = new Table(UnitValue.createPercentArray(columnWidths)).useAllAvailableWidth();
 
             // Agregar encabezados
-            table.addHeaderCell("Fecha");
-            table.addHeaderCell("Valor");
-            table.addHeaderCell("Actividad");
+            table.addHeaderCell("📅 Fecha");
+            table.addHeaderCell("🔢 Valor");
+            table.addHeaderCell("🚀 Actividad");
+            table.addHeaderCell("💡 Recomendación");
 
-            // Agregar datos de la huella de carbono
+            // Agregar datos de la huella de carbono con sus recomendaciones
             for (Huella h : huellas) {
-                table.addCell(h.getFecha().toString()); // Asegúrate de tener getFecha() en Huella
+                table.addCell(h.getFecha().toString());
                 table.addCell(String.valueOf(h.getValor()));
-                table.addCell(h.getIdActividad().getNombre()); // Ajusta según tu modelo
+                table.addCell(h.getIdActividad().getNombre());
+
+                // Obtener recomendación según la actividad
+                List<String> recomendaciones = RecomendacionDao.BuscarPorActividad(h.getIdActividad().getId());
+                if (!recomendaciones.isEmpty()) {
+                    StringBuilder recomendacionesText = new StringBuilder();
+                    for (String rec : recomendaciones) {
+                        recomendacionesText.append("Recomendación: " + rec + "\n");
+                    }
+                    table.addCell(recomendacionesText.toString());
+                } else {
+                    table.addCell("No hay recomendaciones disponibles para esta actividad.");
+                }
             }
 
-            // Agregar la tabla al documento
+            // Agregar la tabla al documento y cerrar
             document.add(table);
             document.close();
 
-            System.out.println("PDF generado en: " + destino);
+            System.out.println("✅ PDF generado en: " + destino);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
     }
-
-
 }

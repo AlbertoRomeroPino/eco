@@ -3,9 +3,11 @@ package org.example.utils;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.InputMismatchException;
 import java.util.Scanner;
+
 
 public class Utils {
 
@@ -43,40 +45,46 @@ public class Utils {
     }
 
     public static Instant leeFecha() {
-        System.out.println("Introduce la fecha y hora (si dejas vacío, se tomará el valor por defecto en cada campo).");
 
-        String anio = pedirDatoNumerico("Año (ejemplo: 2024)", "2024", 4);
-        String mes = pedirDatoNumerico("Mes (ejemplo: 02)", "01", 2);
-        String dia = pedirDatoNumerico("Día (ejemplo: 03)", "01", 2);
-        String hora = pedirDatoNumerico("Hora (ejemplo: 15)", "00", 2);
-        String minuto = pedirDatoNumerico("Minuto (ejemplo: 30)", "00", 2);
-        String segundo = pedirDatoNumerico("Segundo (ejemplo: 00)", "00", 2);
 
-        String fechaCompleta = anio + "-" + mes + "-" + dia + " " + hora + ":" + minuto + ":" + segundo;
+        int anio = pedirDatoNumerico("Año (ejemplo: 2024)", 2024, 1000, 9999);
+        int mes = pedirDatoNumerico("Mes (ejemplo: 02)", 1, 1, 12);
+        int dia = pedirDatoNumerico("Día (ejemplo: 03)", 1, 1, obtenerDiasDelMes(anio, mes));
+        int hora = pedirDatoNumerico("Hora (ejemplo: 15)", 0, 0, 23);
+        int minuto = pedirDatoNumerico("Minuto (ejemplo: 30)", 0, 0, 59);
+        int segundo = pedirDatoNumerico("Segundo (ejemplo: 00)", 0, 0, 59);
 
+        String fechaCompleta = String.format("%04d-%02d-%02d %02d:%02d:%02d", anio, mes, dia, hora, minuto, segundo);
         System.out.println("Fecha generada: " + fechaCompleta);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
         LocalDateTime localDateTime = LocalDateTime.parse(fechaCompleta, formatter);
 
-        return localDateTime.atZone(java.time.ZoneOffset.UTC).toInstant();
+        System.out.println("Fecha en formato Instant: " + localDateTime.atZone(ZoneOffset.UTC).toInstant());
+
+        return localDateTime.atZone(ZoneOffset.UTC).toInstant();
     }
 
-    private static String pedirDatoNumerico(String mensaje, String valorPorDefecto, int longitudEsperada) {
+    private static int pedirDatoNumerico(String mensaje, int valorPorDefecto, int min, int max) {
+        Scanner scanner = new Scanner(System.in);
+        int numero;
         while (true) {
-            System.out.print(mensaje + ": ");
-            String entrada = sc.nextLine().trim();
-
-            if (entrada.isEmpty()) {
-                return valorPorDefecto;
+            System.out.print(mensaje + " (Entre " + min + " y " + max + "): ");
+            String entrada = scanner.nextLine().trim();
+            try {
+                numero = Integer.parseInt(entrada.isEmpty() ? String.valueOf(valorPorDefecto) : entrada);
+                if (numero >= min && numero <= max) {
+                    return numero;
+                } else {
+                    System.out.println("❌ Error: El valor debe estar entre " + min + " y " + max + ".");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Error: Ingresa un número válido.");
             }
-
-            if (entrada.matches("\\d{" + longitudEsperada + "}")) {
-                return entrada;
-            }
-
-            System.out.println("Error: Ingresa un número válido de " + longitudEsperada + " dígitos.");
         }
+    }
+
+    public static int obtenerDiasDelMes(int anio, int mes) {
+        return YearMonth.of(anio, mes).lengthOfMonth();
     }
 }

@@ -15,6 +15,7 @@ public class HuellaService {
     public static void CreateHuella() {
         Huella huellaCrear = new Huella();
 
+
         huellaCrear.setIdUsuario(Sesion.getSesion().getUsuario());
 
         // Mostramos todos las actividades para que el usuario elija cualj quiere
@@ -22,13 +23,20 @@ public class HuellaService {
         for (Actividad actividad : actividadList) {
             ViewHabito.MostrarActividades(actividad);
         }
-        Actividad actividad = ActividadDao.BuscarPorId(Utils.leeNumero("Inserte el id de la actividad"));
-        huellaCrear.setIdActividad(actividad);
-        huellaCrear.setValor(Utils.leeBigDecimal("Inserte el valor"));
-        huellaCrear.setUnidad(actividad.getIdCategoria().getUnidad());
-        huellaCrear.setFecha(Utils.leeFecha());
 
-        HuellaDao.InsertHuella(huellaCrear);
+        int actividadId = Utils.leeNumero("Inserte el id de la actividad");
+        if (ActividadDao.BuscarPorId(actividadId) != null) {
+            Actividad actividad = ActividadDao.BuscarPorId(actividadId);
+            huellaCrear.setIdActividad(actividad);
+            huellaCrear.setValor(Utils.leeBigDecimal("Inserte el valor"));
+            huellaCrear.setUnidad(actividad.getIdCategoria().getUnidad());
+            huellaCrear.setFecha(Utils.leeFecha());
+
+            HuellaDao.InsertHuella(huellaCrear);
+        }else {
+            System.err.println("El id de la actividad no existe");
+        }
+
     }
 
     public static void ActualizarHuella() {
