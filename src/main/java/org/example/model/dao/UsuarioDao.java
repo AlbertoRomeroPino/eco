@@ -19,7 +19,7 @@ public class UsuarioDao {
 
         if (usuarioTMP != null) {
             System.out.println("Usuario ya existente");
-        }else {
+        } else {
             Session session = Connection.getInstance().getSession();
             session.beginTransaction();
             session.persist(usuario);
@@ -56,6 +56,7 @@ public class UsuarioDao {
         usuario = query.uniqueResult();
         return usuario;
     }
+
     /**
      * Actualiza un usuario
      *
