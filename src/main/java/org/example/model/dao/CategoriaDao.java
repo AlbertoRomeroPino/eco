@@ -1,7 +1,6 @@
 package org.example.model.dao;
 
 import org.example.model.connection.Connection;
-import org.example.model.entity.Actividad;
 import org.example.model.entity.Categoria;
 import org.hibernate.Session;
 

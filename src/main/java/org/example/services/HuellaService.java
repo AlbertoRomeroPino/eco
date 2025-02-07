@@ -62,7 +62,11 @@ public class HuellaService {
 
     public static void EliminarHuella() {
         Huella huella = HuellaDao.BuscarHuellaId(Utils.leeNumero("Inserte el id de la huella"));
-        HuellaDao.EliminarHuella(huella);
+        if (huella != null) {
+            HuellaDao.EliminarHuella(huella);
+        }else {
+            System.err.println("El id de la huella no existe");
+        }
     }
 
     public static void CompararHuella() {

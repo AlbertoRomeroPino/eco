@@ -65,8 +65,15 @@ public class HabitoService {
             System.out.println("Hábito encontrado: " + habitoActualizar);
 
             // Pedir nuevos valores al usuario
-            habitoActualizar.setTipo(Utils.leeString("Ingrese el nuevo tipo de hábito:\n" +
-                    "diario, semanal, mensual o anual"));
+            HabitoTipo tipoHabito = null;
+            while (tipoHabito == null) {
+                String tipoIngresado = Utils.leeString("Ingrese el tipo de hábito (diario, semanal, mensual o anual)").toLowerCase();
+                try {
+                    tipoHabito = HabitoTipo.valueOf(tipoIngresado);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("⚠️ Tipo inválido. Por favor, ingrese una opción válida: diario, semanal, mensual o anual.");
+                }
+            }
             habitoActualizar.setFrecuencia(Utils.leeNumero("Ingrese la nueva frecuencia"));
             habitoActualizar.setUltimaFecha(Utils.leeFecha());
 
@@ -88,6 +95,11 @@ public class HabitoService {
 
     public static void EliminarHabito() {
         Habito habito = HabitoDao.BuscarHabitoId(Utils.leeNumero("Ingrese el id de la actividad"));
-        HabitoDao.EliminarHabito(habito);
+        if (habito != null) {
+            HabitoDao.EliminarHabito(habito);
+        }else {
+            System.out.println("Habito no encontrado.");
+        }
+
     }
 }

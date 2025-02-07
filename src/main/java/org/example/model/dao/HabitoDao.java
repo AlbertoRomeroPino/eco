@@ -57,7 +57,7 @@ public class HabitoDao {
                 "SELECT h FROM Habito h " +
                         "JOIN FETCH h.idUsuario " +
                         "JOIN FETCH h.idActividad " +
-                        "WHERE h.idUsuario.id = :idUsuario",  // Filtrar por el usuario logueado
+                        "WHERE h.idUsuario.id = :idUsuario",
                 Habito.class
         ).setParameter("idUsuario", Sesion.getSesion().getUsuario().getId());
 
